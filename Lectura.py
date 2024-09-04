@@ -1,11 +1,18 @@
 from flask import Flask, render_template, url_for
 
-RpgApp = Flask(__name__)
+Lectura = Flask(__name__)
 
-@RpgApp.route('/')
-
+@Lectura.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
+
+@Lectura.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@Lectura.route('/signin')
+def signin():
+    return render_template('signin.html')
 
 if __name__ == "__main__":
-    RpgApp.run(debug=True,port=3300)
+    Lectura.run(debug=True,port=3300)
