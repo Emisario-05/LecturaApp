@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-09-2024 a las 01:06:34
+-- Tiempo de generación: 06-09-2024 a las 02:21:02
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 7.4.25
 
@@ -33,7 +33,7 @@ CREATE TABLE `usuario` (
   `correo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `clave` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `fechareg` datetime NOT NULL,
-  `perfil` char(1) COLLATE utf8_spanish_ci NOT NULL
+  `perfil` char(1) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'U'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
