@@ -1,26 +1,31 @@
 from flask import Flask, render_template, url_for, request, redirect
-from flask import_mysqldb import MySQL
+from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash
-from datetime import datetime
+from datetime import datetime 
+from config import config
 
 
 Lectura = Flask(__name__)
-db      = MySQL(__Lectura__)
+db      = MySQL(Lectura)
 
 @Lectura.route('/')
 def home():
     return render_template('home.html')
 
-@Lectura.route('/signup')
+@Lectura.route('/signup', methods = ['POST', 'GET'])
 def signup():
-    if request.metod == 'POST':
+    if request.method == 'POST':
         nombre       = request.form['nombre']
         correo       = request.form['correo']
         clave        = request.form['clave']
         claveCifrada = generate_password_hash(clave)
         fechareg     = datetime.now()
-
-    return render_template('signup.html')
+        regUsuario   = db.connection.cursor()
+        regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s )", (nombre, correo, claveCifrada, fechareg))
+        db.connection.commit()
+        return render_template('home.html')
+    else:
+        return render_template('signup.html')
 
 @Lectura.route('/signin')
 def signin():
