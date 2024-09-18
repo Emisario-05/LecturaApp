@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash
-from datetime import datetime 
+import datetime 
 from config import config
 
 
@@ -19,17 +19,18 @@ def signup():
         correo       = request.form['correo']
         clave        = request.form['clave']
         claveCifrada = generate_password_hash(clave)
-        fechareg     = datetime.now()
+        fechareg     = datetime.datetime.now()
         regUsuario   = db.connection.cursor()
         regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s )", (nombre, correo, claveCifrada, fechareg))
         db.connection.commit()
         return render_template('home.html')
     else:
-        return render_template('signup.html')
+        return render_template('signup.html', methods = ['POST', 'GET'])
 
 @Lectura.route('/signin')
 def signin():
     return render_template('signin.html')
 
 if __name__ == "__main__":
-    Lectura.run(debug=True,port=3300)
+    Lectura.config.from_object(config['development'])
+    Lectura.run(port=3300)

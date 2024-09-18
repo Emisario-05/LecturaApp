@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 06-09-2024 a las 02:21:02
--- Versión del servidor: 10.4.21-MariaDB
--- Versión de PHP: 7.4.25
+-- Servidor: localhost
+-- Tiempo de generación: 17-09-2024 a las 23:47:35
+-- Versión del servidor: 5.7.44-log
+-- Versión de PHP: 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,6 +37,13 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nombre`, `correo`, `clave`, `fechareg`, `perfil`) VALUES
+(2, 'Derek', 'derek.torres5865@alumnos.udg.mx', 'scrypt:32768:8:1$utaXDK1BWyVijeua$f3bb3cde02545b2c4fcb42c516e3b52426eadaaceb82b6dfca6ea763a532e18917913a575bd25e26a122eff49649e0691e116b7da3ff9a496e0ab59a23465eb8', '2024-09-17 17:12:07', 'U');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -54,7 +61,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
