@@ -1,31 +1,42 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_mysqldb import MySQL
+from flask_login import LoginManager, login_user, logout_user
 from werkzeug.security import generate_password_hash
 import datetime 
 from config import config
-
+from models.ModelUser import ModelUser
+from models.entities.User import User
 
 Lectura = Flask(__name__)
 db      = MySQL(Lectura)
+adminSession = LoginManager(Lectura)
+
+@adminSession.user_loader
+def addUser(id):
+    return ModelUser.get_by_id(db,id)
 
 @Lectura.route('/')
 def home():
     return render_template('home.html')
 
-@Lectura.route('/signup', methods = ['POST', 'GET'])
-def signup():
-    if request.method == 'POST':
-        nombre       = request.form['nombre']
-        correo       = request.form['correo']
-        clave        = request.form['clave']
-        claveCifrada = generate_password_hash(clave)
-        fechareg     = datetime.datetime.now()
-        regUsuario   = db.connection.cursor()
-        regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s )", (nombre, correo, claveCifrada, fechareg))
-        db.connection.commit()
-        return render_template('home.html')
+@Lectura.route('/signin',methods=['GET','PSOT0'])
+def signin():
+    if request.form == 'POST':
+        usuario = User(0,None,request.form['correo'],request.form['clave'],None,None)
+        usuarioAutenticado = ModelUser.signin(db,usuario)
+        if usuarioAutenticado is not None:
+            if usuarioAutenticado.clave:
+                login_user(usuarioAutenticado)
+                if usuarioAutenticado.perfil == 'A':
+                    return render_template('admin.html')
+                else:
+                    return render_template ('user.html')
+            else:
+                return 'contraseña incorrecta'
+        else:
+            return 'usuario inexistente'
     else:
-        return render_template('signup.html', methods = ['POST', 'GET'])
+        return render_template('signin.html')
 
 @Lectura.route('/signin')
 def signin():
