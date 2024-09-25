@@ -21,7 +21,7 @@ def home():
 
 @Lectura.route('/signin',methods=['GET','PSOT0'])
 def signin():
-    if request.form == 'POST':
+    if request.method == 'POST':
         usuario = User(0,None,request.form['correo'],request.form['clave'],None,None)
         usuarioAutenticado = ModelUser.signin(db,usuario)
         if usuarioAutenticado is not None:
