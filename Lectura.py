@@ -19,7 +19,15 @@ def addUser(id):
 def home():
     return render_template('home.html')
 
-@Lectura.route('/signin',methods=['GET','PSOT0'])
+@Lectura.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@Lectura.route('/user')
+def user():
+    return render_template('user.html')
+
+@Lectura.route('/signin',methods=['GET','POST'])
 def signin():
     if request.method == 'POST':
         usuario = User(0,None,request.form['correo'],request.form['clave'],None,None)
@@ -38,9 +46,33 @@ def signin():
     else:
         return render_template('signin.html')
 
-@Lectura.route('/signin')
-def signin():
-    return render_template('signin.html')
+@Lectura.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        correo = request.form['correo']
+        clave = request.form['clave']
+        claveCifrado = generate_password_hash(clave)
+        fechaReg = datetime.datetime.now()
+        regUsuario = db.connection.cursor()
+        regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre, correo, claveCifrado, fechaReg))
+        db.connection.commit()
+        return render_template('home.html')
+    else:
+        return render_template('signup.html')
+
+@Lectura.route('/sigout',methods=['get','post'])
+def sigout():
+    logout_user()
+    return redirect(url_for('home'))
+
+@Lectura.route('/sUsuario', methods=['GET','POST'])
+def sUsuario():
+    sUsuario = db.connection.cursor()
+    sUsuario.execute("SELECT * FROM usuario")
+    u = sUsuario.fetchall()
+    sUsuario.close()
+    return render_template ('usuarios.html',usuarios=u)
 
 if __name__ == "__main__":
     Lectura.config.from_object(config['development'])

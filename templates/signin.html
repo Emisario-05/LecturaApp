@@ -28,7 +28,7 @@
 </div>
 <div class="login-container">
 <h1>Iniciar Sesión</h1>
-    <form method="post" action="/procesar_inicio_sesion" >
+    <form method="post" action="/signin" >
         <label for="correo">Correo electrónico:</label>
         <input type="email" id="coreo" name="correo" required>
         <br>
@@ -38,4 +38,7 @@
         <button type="submit">Iniciar Sesión</button>
     </form>
 </div>
+<form method="post" action="/signup">
+<button type="submit" >Registrate</button>
+</form>
 {% endblock %}

@@ -1,5 +1,5 @@
 class Config:
-    SECRET_KEY  = 'pollomanhizounviajedelcualnuncavolvio' 
+    SECRET_KEY  = 'gfdngidrngidfufbuifbvudgbdfgnfbkfvndjkvbdfuibfgjbjhdbfjhfgbnjfgg' 
     DEBUG       = True
 
 class DevelopmentConfig(Config):
