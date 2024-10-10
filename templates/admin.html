@@ -1,73 +1,153 @@
 {% extends 'layout.html' %}
-{% block titulo %} LecturaApp/Admin {% endblock %}
+{% block titulo %} Admin/Usuarios {% endblock %}
 {% block contenido %}
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        <i class="fa-duotone fa-solid fa-book" style="--fa-primary-color: #2ecbff; --fa-secondary-color: #eceff3;"></i>
-        LecturaApp</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signup"><i class="fa-regular fa-user" style="color: #63E6BE;"></i></a>
-          </li>
-        </ul>
+
+<style>
+  body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+  }
+  .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      padding: 15px;
+      position: fixed;
+  }
+  .sidebar a {
+      color: #fff;
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+  }
+  .sidebar a:hover {
+      background-color: #495057;
+  }
+  .main-content {
+      margin-left: 200px;
+      padding: 20px;
+  }
+  .card-custom {
+      border-radius: 10px;
+  }
+  .navbar-custom {
+      background-color: #007bff;
+  }
+  .navbar-custom .navbar-brand, .navbar-custom .navbar-nav .nav-link {
+      color: #fff;
+  }
+  .profile-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #fff;
+  }
+  .card-title {
+      font-weight: bold;
+  }
+</style>
+
+ <!-- Sidebar -->
+ <div class="sidebar">
+  <h4 class="text-white">Admin Panel</h4>
+  <a href="#">Dashboard</a>
+  <a href="/sUsuario">Users</a>
+  <a href="#">Settings</a>
+  <a href="#">Profile</a>
+  <a href="#">Logout</a>
+</div>
+
+<!-- Main content -->
+<div class="main-content">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="#">{{current_user.nombre}}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
       </div>
-    </div>
   </nav>
 
-  <div id="carouselExample" class="carousel slide">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="{{ url_for('static', filename='img/MazingerZ04.jpg')}}" class="d-block w-100" alt="...">
+  <!-- Profile Section -->
+  <div class="row mt-4">
+      <div class="col-md-4 text-center">
+          <img src="https://via.placeholder.com/150" alt="Admin Profile" class="profile-img mb-3">
+          <h4></h4>
+          <p></p>
       </div>
-      <div class="carousel-item">
-        <img src="..." class="d-block w-100" alt="...">
+      <div class="col-md-8">
+          <h5>Statistics</h5>
+          <div class="row">
+              <div class="col-md-4">
+                  <div class="card card-custom text-center">
+                      <div class="card-body">
+                          <h6 class="card-title">Total Users</h6>
+                          <p class="card-text">150</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="card card-custom text-center">
+                      <div class="card-body">
+                          <h6 class="card-title">Active Sessions</h6>
+                          <p class="card-text">25</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="card card-custom text-center">
+                      <div class="card-body">
+                          <h6 class="card-title">New Signups</h6>
+                          <p class="card-text">10</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div class="carousel-item">
-        <img src="..." class="d-block w-100" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
 
-<div class="card" style="width: 18rem;">
-    <img src="{{ url_for('static', filename='img/tokyoghoul_p1.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Tamales rojos</h5>
-      <p class="card-text">Tamales extremadamente mexicano, 100% hechos con masa natural, no plasticos.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
+  <!-- Graph Section (placeholder) -->
+  <div class="row mt-5">
+      <div class="col-md-12">
+          <h5>Performance Overview</h5>
+          <div class="card card-custom">
+              <div class="card-body">
+                  <canvas id="performanceChart"></canvas>
+              </div>
+          </div>
+      </div>
   </div>
+</div>
 
-  <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-      <p class="col-md-4 mb-0 text-body-secondary"></p>
-  
-      <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-      </a>
-  
-      <ul class="nav col-md-4 justify-content-end">
-        <li class="nav-item"><a href="index.html" class="nav-link px-2 text-body-secondary">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
-      </ul>
-    </footer>
-  </div>
-{%endblock %}
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js (for graphs) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Example chart (Performance Overview)
+  const ctx = document.getElementById('performanceChart').getContext('2d');
+  const performanceChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          datasets: [{
+              label: 'User Growth',
+              data: [10, 20, 30, 40, 50, 60],
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 2,
+              fill: false
+          }]
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  display: true
+              }
+          }
+      }
+  });
+</script>
+
+{% endblock %}

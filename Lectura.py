@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, flash, render_template, url_for, request, redirect
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user
 from werkzeug.security import generate_password_hash
@@ -40,9 +40,11 @@ def signin():
                 else:
                     return render_template ('user.html')
             else:
-                return 'contraseña incorrecta'
+                flash('Contraseña incorecta')
+            return redirect(request.url)
         else:
-            return 'usuario inexistente'
+            flash('Usuario inexistente')
+            return redirect(request.url)
     else:
         return render_template('signin.html')
 
@@ -57,6 +59,7 @@ def signup():
         regUsuario = db.connection.cursor()
         regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre, correo, claveCifrado, fechaReg))
         db.connection.commit()
+        regUsuario.close ()
         return render_template('home.html')
     else:
         return render_template('signup.html')
@@ -72,7 +75,21 @@ def sUsuario():
     sUsuario.execute("SELECT * FROM usuario")
     u = sUsuario.fetchall()
     sUsuario.close()
-    return render_template ('usuarios.html',usuarios=u)
+    return render_template('usuarios.html',usuarios=u)
+
+@Lectura.route('/iUsuario', methods=['GET','POST'])
+def iUsuario():
+    nombre = request.form['nombre']
+    correo = request.form['correo']
+    clave = request.form['clave']
+    claveCifrado = generate_password_hash(clave)
+    fechaReg = datetime.datetime.now()
+    perfil = request.form['perfil']
+    regUsuario = db.connection.cursor()
+    regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre.upper(), correo, claveCifrado, fechaReg))
+    db.connection.commit()
+    return redirect(url_for('sUsuario'))
+
 
 if __name__ == "__main__":
     Lectura.config.from_object(config['development'])

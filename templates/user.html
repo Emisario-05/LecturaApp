@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
-{% block titulo %} LecturaApp {% endblock %}
+{% block titulo %} Admin/Usuarios {% endblock %}
 {% block contenido %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="/user">
         <i class="fa-duotone fa-solid fa-book" style="--fa-primary-color: #2ecbff; --fa-secondary-color: #eceff3;"></i>
         LecturaApp</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,20 +12,15 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <a class="nav-link active" aria-current="page" href="/user">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/signin">Registrate</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signup"><i class="fa-regular fa-user" style="color: #63E6BE;"></i></a>
+            <a class="nav-link" href="/signup"><i class="fa-regular fa-user" style="color: #0426ae;"></i></a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
- 
 
   <div id="carouselExample" class="carousel slide">
     <div class="carousel-inner">
@@ -75,4 +70,4 @@
       </ul>
     </footer>
   </div>
-{%endblock %}
+  {%endblock %}
