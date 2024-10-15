@@ -77,19 +77,24 @@ def sUsuario():
     sUsuario.close()
     return render_template('usuarios.html',usuarios=u)
 
-@Lectura.route('/iUsuario', methods=['GET','POST'])
+@Lectura.route('/iUsuario/<int:id>', methods=['GET','POST'])
 def iUsuario():
     nombre = request.form['nombre']
     correo = request.form['correo']
-    clave = request.form['clave']
-    claveCifrado = generate_password_hash(clave)
     fechaReg = datetime.datetime.now()
     perfil = request.form['perfil']
     regUsuario = db.connection.cursor()
-    regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre.upper(), correo, claveCifrado, fechaReg))
+    regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre.upper(), correo, fechaReg, perfil))
     db.connection.commit()
     return redirect(url_for('sUsuario'))
 
+@Lectura.route('/dUsuario/<int:id>', methods=['GET','POST'])
+def dUsuario(id):
+    delUsuario= db.connection.cursor()
+    delUsuario.execute("DELETE FROM usuario WHERE id=%s",(id,))
+    db.connection.commit()
+    flash('Este pendejo ya no existe')
+    return redirect(url_for('sUsuario'))
 
 if __name__ == "__main__":
     Lectura.config.from_object(config['development'])
