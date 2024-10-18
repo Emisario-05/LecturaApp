@@ -64,8 +64,8 @@ def signup():
     else:
         return render_template('signup.html')
 
-@Lectura.route('/sigout',methods=['get','post'])
-def sigout():
+@Lectura.route('/signout', methods=['GET', 'POST'])
+def signout():
     logout_user()
     return redirect(url_for('home'))
 
@@ -77,15 +77,30 @@ def sUsuario():
     sUsuario.close()
     return render_template('usuarios.html',usuarios=u)
 
-@Lectura.route('/iUsuario/<int:id>', methods=['GET','POST'])
+@Lectura.route('/iUsuario',methods=['GET', 'POST'])
 def iUsuario():
     nombre = request.form['nombre']
     correo = request.form['correo']
+    clave = request.form['clave']
+    claveCifrada = generate_password_hash(clave)
     fechaReg = datetime.datetime.now()
-    perfil = request.form['perfil']
-    regUsuario = db.connection.cursor()
-    regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre.upper(), correo, fechaReg, perfil))
+    perfil = request.form
+    cursor = db.connection.cursor()
+    cursor.execute("INSERT INTO usuario (nombre, correo, clave, fechareg, perfil) VALUES (%s, %s, %s, %s)", (nombre, correo, claveCifrada, fechaReg, perfil))
     db.connection.commit()
+    flash('usuario agregado')
+    return redirect(url_for('sUsuario'))
+
+@Lectura.route('/uUsuario/<int:id>', methods=['GET', 'POST'])
+def uUsuario(id):
+    nombre=request.form['nombre']
+    correo=request.form['correo']
+    perfil=request.form['perfil']
+    actUsuario = db.connection.cursor()
+    actUsuario.execute("UPDATE usuario SET nombre=%s,correo=%s,perfil%s WHERE id=%s", (nombre.upper(),correo,perfil))
+    db.connection.commit()
+    actUsuario.close()
+    flash('usuario actualizado')
     return redirect(url_for('sUsuario'))
 
 @Lectura.route('/dUsuario/<int:id>', methods=['GET','POST'])
