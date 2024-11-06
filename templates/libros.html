@@ -68,9 +68,53 @@
         <th scope="col">resumen</th>
         <th scope="col">imagen</th>
         <th scope="col" colspan="2">
-            <button class="fa-solid fa-user-plus" style="color: #58a6ee;"></button>
+        <!-- Button insert -->
+        <button type="button" class="fa-solid fa-user-plus" style="color: #58a6ee;" data-bs-toggle="modal" data-bs-target="#insert">
+        </button>
         </th>
       </tr>
+      <!-- Modal insert -->
+<div class="modal fade" id="insert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir libro</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" action="/iLibros">
+            <div class="modal-body">
+              <label for="titulo">Titulo</label>
+              <input type="text" id="titulo" name="titulo" required>
+              <br>
+              <label for="autor">Autor</label>
+              <input type="text" id="autor" name="autor"  required>
+              <br>
+              <label for="genero">Genero</label>
+              <input type="text" id="genero" name="genero"  required>
+              <br>
+              <label for="fecha_pub">Fecha_pub</label>
+              <input type="text" id="fecha_pub" name="fecha_pub" required>
+              <br>
+              <label for="resumen">Resumen</label>
+              <input type="text" id="resumen" name="resumen"  required>
+              <br>
+              <label for="img">Imagen</label>
+              <input type="text" id="img" name="img"  required>
+              <br>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          </div>
+      </form>
+  </div>
+</div>
+</div>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
     </thead>
     <tbody>
         {%for l in Libros%}

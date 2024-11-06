@@ -97,9 +97,10 @@ def iUsuario():
 def uUsuario(id):
     nombre=request.form['nombre']
     correo=request.form['correo']
+    clave=request.form['clave']
     perfil=request.form['perfil']
     actUsuario = db.connection.cursor()
-    actUsuario.execute("UPDATE usuario SET nombre=%s,correo=%s,perfil%s WHERE id=%s", (nombre.upper(),correo,perfil))
+    actUsuario.execute("UPDATE usuario SET nombre=%s,correo=%s,perfil=%s,clave=%s WHERE id=%s", (nombre,correo,perfil,clave,id))
     db.connection.commit()
     actUsuario.close()
     flash('usuario actualizado')
@@ -124,6 +125,20 @@ def sLibros():
     else:
         return render_template('usuario.html',usuarios=lib)
 
+@Lectura.route('/iLibro',methods=['GET', 'POST'])
+def iLibros():
+    titulo = request.form['titulo']
+    autor = request.form['autor']
+    genero = request.form['genero']
+    fecha_pub = request.form['fecha_pub']
+    resumen = request.form['resumen']
+    img = request.form['img']
+    cursor = db.connection.cursor()
+    cursor.execute("INSERT INTO usuario (titulo,autor,genero,fecha_pub,resumen,img) VALUES (%s,%s,%s,%s,%s,%s)", (titulo,autor,genero,fecha_pub,resumen,img))
+    db.connection.commit()
+    flash('libro agregado')
+    return redirect(url_for('sLibros'))
+
 @Lectura.route('/uLibros/<int:id>', methods=['GET', 'POST'])
 def uLibros(id):
     titulo=request.form['titulo']
@@ -133,7 +148,7 @@ def uLibros(id):
     resumen=request.form['resumen']
     img=request.form['img']
     actLibros = db.connection.cursor()
-    actLibros.execute("UPDATE usuario SET titulo=%s,autor=%s,genero%s,fechapub=%s,resumen=%s,img=%s WHERE id=%s", (titulo.upper(),autor,genero,fechapub,resumen,img))
+    actLibros.execute("UPDATE usuario SET titulo=%s,autor=%s,genero%s,fechapub=%s,resumen=%s,img=%s WHERE id=%s", (titulo,autor,genero,fechapub,resumen,img,id))
     db.connection.commit()
     actLibros.close()
     flash('Libro actualizado')
