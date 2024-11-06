@@ -1,4 +1,4 @@
-from flask import Flask, flash, render_template, url_for, request, redirect
+from flask import Flask, flash, render_template, url_for, request, redirect, session
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user
 from werkzeug.security import generate_password_hash
@@ -35,6 +35,8 @@ def signin():
         if usuarioAutenticado is not None:
             if usuarioAutenticado.clave:
                 login_user(usuarioAutenticado)
+                session['NombreU'] = usuarioAutenticado.nombre
+                session['PerfilU'] = usuarioAutenticado.perfil
                 if usuarioAutenticado.perfil == 'A':
                     return render_template('admin.html')
                 else:
@@ -110,6 +112,40 @@ def dUsuario(id):
     db.connection.commit()
     flash('Este pendejo ya no existe')
     return redirect(url_for('sUsuario'))
+
+@Lectura.route('/sLibros', methods=['GET','POST'])
+def sLibros():
+    sLibros = db.connection.cursor()
+    sLibros.execute("SELECT * FROM Libros")
+    lib = sLibros.fetchall()
+    sLibros.close()
+    if session['PerfilU'] == 'A':
+        return render_template('libros.html', libros=lib)
+    else:
+        return render_template('usuario.html',usuarios=lib)
+
+@Lectura.route('/uLibros/<int:id>', methods=['GET', 'POST'])
+def uLibros(id):
+    titulo=request.form['titulo']
+    autor=request.form['autor']
+    genero=request.form['genero']
+    fechapub=request.form['fechapub']
+    resumen=request.form['resumen']
+    img=request.form['img']
+    actLibros = db.connection.cursor()
+    actLibros.execute("UPDATE usuario SET titulo=%s,autor=%s,genero%s,fechapub=%s,resumen=%s,img=%s WHERE id=%s", (titulo.upper(),autor,genero,fechapub,resumen,img))
+    db.connection.commit()
+    actLibros.close()
+    flash('Libro actualizado')
+    return redirect(url_for('sLibros'))
+
+@Lectura.route('/dLibros/<int:id>', methods=['GET','POST'])
+def dLibros(id):
+    delLibros= db.connection.cursor()
+    delLibros.execute("DELETE FROM usuario WHERE id=%s",(id,))
+    db.connection.commit()
+    flash('Se borro el libro')
+    return redirect(url_for('dLibros'))
 
 if __name__ == "__main__":
     Lectura.config.from_object(config['development'])
