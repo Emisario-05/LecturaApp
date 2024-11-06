@@ -86,9 +86,9 @@ def iUsuario():
     clave = request.form['clave']
     claveCifrada = generate_password_hash(clave)
     fechaReg = datetime.datetime.now()
-    perfil = request.form
+    perfil = request.form['perfil']
     cursor = db.connection.cursor()
-    cursor.execute("INSERT INTO usuario (nombre, correo, clave, fechareg, perfil) VALUES (%s, %s, %s, %s)", (nombre, correo, claveCifrada, fechaReg, perfil))
+    cursor.execute("INSERT INTO usuario (nombre, correo, clave, fechareg, perfil) VALUES (%s, %s, %s, %s,%s)", (nombre, correo, claveCifrada, fechaReg, perfil))
     db.connection.commit()
     flash('usuario agregado')
     return redirect(url_for('sUsuario'))
