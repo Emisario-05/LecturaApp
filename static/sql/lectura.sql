@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-10-2024 a las 00:00:12
+-- Tiempo de generación: 06-11-2024 a las 00:14:07
 -- Versión del servidor: 5.7.44-log
 -- Versión de PHP: 7.4.9
 
@@ -48,16 +48,17 @@ CREATE TABLE `grupo_libros` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `libro`
+-- Estructura de tabla para la tabla `libros`
 --
 
-CREATE TABLE `libro` (
+CREATE TABLE `libros` (
   `id` int(11) NOT NULL,
   `titulo` varchar(100) NOT NULL,
   `autor` varchar(100) NOT NULL,
   `genero` varchar(100) NOT NULL,
   `fecha_publicacion` datetime NOT NULL,
-  `resumen` varchar(10000) NOT NULL
+  `resumen` varchar(10000) NOT NULL,
+  `img` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -116,9 +117,9 @@ ALTER TABLE `grupo_libros`
   ADD KEY `libro_id` (`libro_id`);
 
 --
--- Indices de la tabla `libro`
+-- Indices de la tabla `libros`
 --
-ALTER TABLE `libro`
+ALTER TABLE `libros`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -152,9 +153,9 @@ ALTER TABLE `grupo_libros`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `libro`
+-- AUTO_INCREMENT de la tabla `libros`
 --
-ALTER TABLE `libro`
+ALTER TABLE `libros`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
