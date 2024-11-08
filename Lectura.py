@@ -120,25 +120,24 @@ def sLibros():
     sLibros.execute("SELECT * FROM Libros")
     lib = sLibros.fetchall()
     sLibros.close()
-    if session['PerfilU'] == 'A':
-        return render_template('libros.html', libros=lib)
-    else:
-        return render_template('usuario.html',usuarios=lib)
+    return render_template('libros.html',libros=lib)
 
-@Lectura.route('/iLibro',methods=['GET', 'POST'])
+@Lectura.route('/iLibros',methods=['GET', 'POST'])
 def iLibros():
     titulo = request.form['titulo']
     autor = request.form['autor']
     genero = request.form['genero']
-    fecha_pub = request.form['fecha_pub']
+    fecha_publicacion = request.form['fecha_publicacion']
     resumen = request.form['resumen']
     img = request.form['img']
     cursor = db.connection.cursor()
-    cursor.execute("INSERT INTO usuario (titulo,autor,genero,fecha_pub,resumen,img) VALUES (%s,%s,%s,%s,%s,%s)", (titulo,autor,genero,fecha_pub,resumen,img))
+    cursor.execute("INSERT INTO libros (titulo,autor,genero,fecha_publicacion,resumen,img) VALUES (%s,%s,%s,%s,%s,%s)", (titulo,autor,genero,fecha_publicacion,resumen,img))
     db.connection.commit()
     flash('libro agregado')
     return redirect(url_for('sLibros'))
 
+
+    
 @Lectura.route('/uLibros/<int:id>', methods=['GET', 'POST'])
 def uLibros(id):
     titulo=request.form['titulo']
@@ -148,7 +147,7 @@ def uLibros(id):
     resumen=request.form['resumen']
     img=request.form['img']
     actLibros = db.connection.cursor()
-    actLibros.execute("UPDATE usuario SET titulo=%s,autor=%s,genero%s,fechapub=%s,resumen=%s,img=%s WHERE id=%s", (titulo,autor,genero,fechapub,resumen,img,id))
+    actLibros.execute("UPDATE libros SET titulo=%s,autor=%s,genero%s,fechapub=%s,resumen=%s,img=%s WHERE id=%s", (titulo,autor,genero,fechapub,resumen,img,id))
     db.connection.commit()
     actLibros.close()
     flash('Libro actualizado')
@@ -157,10 +156,10 @@ def uLibros(id):
 @Lectura.route('/dLibros/<int:id>', methods=['GET','POST'])
 def dLibros(id):
     delLibros= db.connection.cursor()
-    delLibros.execute("DELETE FROM usuario WHERE id=%s",(id,))
+    delLibros.execute("DELETE FROM libros WHERE id=%s",(id,))
     db.connection.commit()
     flash('Se borro el libro')
-    return redirect(url_for('dLibros'))
+    return redirect(url_for('sLibros'))
 
 if __name__ == "__main__":
     Lectura.config.from_object(config['development'])

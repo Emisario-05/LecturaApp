@@ -55,24 +55,34 @@
   <a href="/sLibros">Libros</a>
   <a href="/signout">Logout</a>
 </div>
-
 <div class="container">
-    <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">id</th>
-        <th scope="col">titulo</th>
-        <th scope="col">autor</th>
-        <th scope="col">genero</th>
-        <th scope="col">fecha_pub</th>
-        <th scope="col">resumen</th>
-        <th scope="col">imagen</th>
-        <th scope="col" colspan="2">
-        <!-- Button insert -->
-        <button type="button" class="fa-solid fa-user-plus" style="color: #58a6ee;" data-bs-toggle="modal" data-bs-target="#insert">
-        </button>
-        </th>
-      </tr>
+  {% with mensajes = get_flashed_messages() %}
+  {% if mensaje %}
+  {% for m in mensajes %}
+  <div class="alert alert-danger d-flex align-items-center" role="alert">
+  <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+  </div>
+  {{ m }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+    <table class="table table-dark table-striped-columns">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">titulo</th>
+                <th scope="col">autor</th>
+                <th scope="col">genero</th>
+                <th scope="col">fecha_pub</th>
+                <th scope="col">resumen</th>
+                <th scope="col">imagen</th>
+                <th scope="col" colspan="2">
+                 <!-- Button insert -->
+                <button type="button" class="fa-solid fa-plus" style="color: #58a6ee;" data-bs-toggle="modal" data-bs-target="#insert">
+               </button>
+              </th>
+            </tr>
       <!-- Modal insert -->
 <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -92,11 +102,11 @@
               <label for="genero">Genero</label>
               <input type="text" id="genero" name="genero"  required>
               <br>
-              <label for="fecha_pub">Fecha_pub</label>
-              <input type="text" id="fecha_pub" name="fecha_pub" required>
+              <label for="fecha_publicacion">Fecha_pub</label>
+              <input type="text" id="fecha_publicacion" name="fecha_publicacion" required>
               <br>
               <label for="resumen">Resumen</label>
-              <input type="text" id="resumen" name="resumen"  required>
+              <input type="text" id="resumen" name="resumen" required>
               <br>
               <label for="img">Imagen</label>
               <input type="text" id="img" name="img"  required>
@@ -107,9 +117,9 @@
               <button type="submit" class="btn btn-primary">Guardar cambios</button>
           </div>
       </form>
+      </div>
+    </div>
   </div>
-</div>
-</div>
               </div>
           </form>
       </div>
@@ -117,51 +127,54 @@
 </div>
     </thead>
     <tbody>
-        {%for l in Libros%}
+        {%for lib in libros%}
       <tr>
-        <th scope="row">{{l.0}}</th>
-        <td>{{l.1}}</td>
-        <td>{{l.2}}</td>
-        <td>{{l.3}}</td>
-        <td>{{l.4}}</td>
-        <td>{{l.5}}</td>
-        <td><img src="/static/img/{{l.6}}" height="50px"></td>
+        <th scope="row">{{lib.0}}</th>
+        <td>{{lib.1}}</td>
+        <td>{{lib.2}}</td>
+        <td>{{lib.3}}</td>
+        <td>{{lib.4}}</td>
+        <td>{{lib.5}}</td>
+        <td><img src="/static/img/{{lib.6}}" height="50px"></td>
         <td> 
-            <button type="button" class="fa-solid fa-user-pen" style="color: #2bc53d;" data-bs-toggle="modal" data-bs-target="#editar{{ u.id }}"></button>
+          <!-- Button Modal trigger  -->
+          <button type="button" class="fa-solid fa-pencil" style="color: #2bc53d;" data-bs-toggle="modal" data-bs-target="#editar{{ lib.id }}"></button>
         </td>
         <td>
-            <button type="button" class="fa-solid fa-user-xmark" style="color: #d31717;" data-bs-toggle="modal" data-bs-target="#eliminar{{u.0}}"></button>    
+          <!-- Button MODAL ELIMINAR-->
+          <button type="button" class="fa-solid fa-xmark" style="color: #d31717;" data-bs-toggle="modal" data-bs-target="#eliminar{{lib.0}}"></button>    
         </td>
       </tr>
 
-      <div class="modal fade" id="editar{{ l.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <!-- Modal trigger editar -->
+      <div class="modal fade" id="editar{{ lib.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Libro</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="post" action="/uLibros/{{ l.id }}">
-                    <div class="modal-body">
-                        <label for="titulo">Titulo</label>
-                        <input type="text" id="titulo" name="titulo" value="{{ u.titulo }}" required>
-                        <br>
-                        <label for="autor">Autor</label>
-                        <input type="text" id="autor" name="autor" value="{{ u.autor }}" required>
-                        <br>
-                        <label for="genero">Genero</label>
-                        <input type="text" id="genero" name="genero" value="{{ u.genero }}" required>
-                        <br>
-                        <label for="fecha_pub">Fecha_pub</label>
-                        <input type="text" id="fecha_pub" name="fecha_pub" value="{{ u.fecha_pub }}" required>
-                        <br>
-                        <label for="resumen">Resumen</label>
-                        <input type="text" id="resumen" name="resumen" value="{{ u.resumen }}" required>
-                        <br>
-                        <label for="img">Imagen</label>
-                        <input type="image" id="img" name="img" value="{{ u.img }}" required>
-                        <br>
-                    </div>
+                <form method="post" action="/uLibros/{{ lib.id }}">
+                  <div class="modal-body">
+                    <label for="titulo">Titulo</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                    <br>
+                    <label for="autor">Autor</label>
+                    <input type="text" id="autor" name="autor"  required>
+                    <br>
+                    <label for="genero">Genero</label>
+                    <input type="text" id="genero" name="genero"  required>
+                    <br>
+                    <label for="fecha_publicacion">Fecha_pub</label>
+                    <input type="text" id="fecha_publicacion" name="fecha_publicacion" required>
+                    <br>
+                    <label for="resumen">Resumen</label>
+                    <input type="text" id="resumen" name="resumen" required>
+                    <br>
+                    <label for="img">Imagen</label>
+                    <input type="text" id="img" name="img"  required>
+                    <br>
+                </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -171,15 +184,16 @@
         </div>
       </div>
 
-      <div class="modal fade" id="eliminar{{l.0}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <!-- Modal ELIMINAR -->
+      <div class="modal fade" id="eliminar{{lib.0}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
             </div>
-            <form action="/dLibros/{{u.0}}" method="post">
+            <form action="/dLibros/{{lib.0}}" method="post">
             <div class="modal-body">
-              ¿Seguro que de eliminar el libro? {{u.1}}? 
+              ¿Seguro que de eliminar el libro? {{lib.1}}? 
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
