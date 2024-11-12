@@ -9,6 +9,8 @@ from models.entities.User import User
 
 Lectura = Flask(__name__)
 db      = MySQL(Lectura)
+#pythonanywhera
+Lectura.config.from_object(config['development'])
 adminSession = LoginManager(Lectura)
 
 @adminSession.user_loader
@@ -161,6 +163,6 @@ def dLibros(id):
     flash('Se borro el libro')
     return redirect(url_for('sLibros'))
 
-if __name__ == "__main__":
+''' if __name__ == "__main__":
     Lectura.config.from_object(config['development'])
-    Lectura.run(port=3300)
+    Lectura.run(port=3300) '''
