@@ -1,35 +1,39 @@
 from flask import Flask, flash, render_template, url_for, request, redirect, session
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user
+from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash
 import datetime 
 from config import config
 from models.ModelUser import ModelUser
 from models.entities.User import User
 
-Lectura = Flask(__name__)
-db      = MySQL(Lectura)
+LecturaApp = Flask(__name__)
 #pythonanywhera
-Lectura.config.from_object(config['development'])
-adminSession = LoginManager(Lectura)
+LecturaApp.config.from_object(config['development'])
+LecturaApp.config.from_object(config['mail'])
+db           = MySQL(LecturaApp)
+mail         = Mail(LecturaApp)
+adminSession = LoginManager(LecturaApp)
+
 
 @adminSession.user_loader
 def addUser(id):
     return ModelUser.get_by_id(db,id)
 
-@Lectura.route('/')
+@LecturaApp.route('/')
 def home():
     return render_template('home.html')
 
-@Lectura.route('/admin')
+@LecturaApp.route('/admin')
 def admin():
     return render_template('admin.html')
 
-@Lectura.route('/user')
+@LecturaApp.route('/user')
 def user():
     return render_template('user.html')
 
-@Lectura.route('/signin',methods=['GET','POST'])
+@LecturaApp.route('/signin',methods=['GET','POST'])
 def signin():
     if request.method == 'POST':
         usuario = User(0,None,request.form['correo'],request.form['clave'],None,None)
@@ -52,7 +56,7 @@ def signin():
     else:
         return render_template('signin.html')
 
-@Lectura.route('/signup', methods=['POST', 'GET'])
+@LecturaApp.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
         nombre = request.form['nombre']
@@ -63,17 +67,19 @@ def signup():
         regUsuario = db.connection.cursor()
         regUsuario.execute("INSERT INTO usuario (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)", (nombre, correo, claveCifrado, fechaReg))
         db.connection.commit()
-        regUsuario.close ()
+        mensaje = Message(subject='los Zetas estan afuera', recipients=[correo])
+        mensaje.html = render_template('mail.html', nombre=nombre)
+        mail.send(mensaje)
         return render_template('home.html')
     else:
         return render_template('signup.html')
 
-@Lectura.route('/signout', methods=['GET', 'POST'])
+@LecturaApp.route('/signout', methods=['GET', 'POST'])
 def signout():
     logout_user()
     return redirect(url_for('home'))
 
-@Lectura.route('/sUsuario', methods=['GET','POST'])
+@LecturaApp.route('/sUsuario', methods=['GET','POST'])
 def sUsuario():
     sUsuario = db.connection.cursor()
     sUsuario.execute("SELECT * FROM usuario")
@@ -81,7 +87,7 @@ def sUsuario():
     sUsuario.close()
     return render_template('usuarios.html',usuarios=u)
 
-@Lectura.route('/iUsuario',methods=['GET', 'POST'])
+@LecturaApp.route('/iUsuario',methods=['GET', 'POST'])
 def iUsuario():
     nombre = request.form['nombre']
     correo = request.form['correo']
@@ -95,7 +101,8 @@ def iUsuario():
     flash('usuario agregado')
     return redirect(url_for('sUsuario'))
 
-@Lectura.route('/uUsuario/<int:id>', methods=['GET', 'POST'])
+
+@LecturaApp.route('/uUsuario/<int:id>', methods=['GET', 'POST'])
 def uUsuario(id):
     nombre=request.form['nombre']
     correo=request.form['correo']
@@ -108,7 +115,7 @@ def uUsuario(id):
     flash('usuario actualizado')
     return redirect(url_for('sUsuario'))
 
-@Lectura.route('/dUsuario/<int:id>', methods=['GET','POST'])
+@LecturaApp.route('/dUsuario/<int:id>', methods=['GET','POST'])
 def dUsuario(id):
     delUsuario= db.connection.cursor()
     delUsuario.execute("DELETE FROM usuario WHERE id=%s",(id,))
@@ -116,7 +123,7 @@ def dUsuario(id):
     flash('Este pendejo ya no existe')
     return redirect(url_for('sUsuario'))
 
-@Lectura.route('/sLibros', methods=['GET','POST'])
+@LecturaApp.route('/sLibros', methods=['GET','POST'])
 def sLibros():
     sLibros = db.connection.cursor()
     sLibros.execute("SELECT * FROM Libros")
@@ -124,7 +131,7 @@ def sLibros():
     sLibros.close()
     return render_template('libros.html',libros=lib)
 
-@Lectura.route('/iLibros',methods=['GET', 'POST'])
+@LecturaApp.route('/iLibros',methods=['GET', 'POST'])
 def iLibros():
     titulo = request.form['titulo']
     autor = request.form['autor']
@@ -140,7 +147,7 @@ def iLibros():
 
 
     
-@Lectura.route('/uLibros/<int:id>', methods=['GET', 'POST'])
+@LecturaApp.route('/uLibros/<int:id>', methods=['GET', 'POST'])
 def uLibros(id):
     titulo=request.form['titulo']
     autor=request.form['autor']
@@ -155,7 +162,7 @@ def uLibros(id):
     flash('Libro actualizado')
     return redirect(url_for('sLibros'))
 
-@Lectura.route('/dLibros/<int:id>', methods=['GET','POST'])
+@LecturaApp.route('/dLibros/<int:id>', methods=['GET','POST'])
 def dLibros(id):
     delLibros= db.connection.cursor()
     delLibros.execute("DELETE FROM libros WHERE id=%s",(id,))
@@ -163,6 +170,5 @@ def dLibros(id):
     flash('Se borro el libro')
     return redirect(url_for('sLibros'))
 
-''' if __name__ == "__main__":
-    Lectura.config.from_object(config['development'])
-    Lectura.run(port=3300) '''
+if __name__ == "__main__":
+    LecturaApp.run(port=3300) 
