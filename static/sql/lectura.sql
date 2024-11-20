@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-11-2024 a las 00:14:07
+-- Tiempo de generación: 20-11-2024 a las 00:05:02
 -- Versión del servidor: 5.7.44-log
 -- Versión de PHP: 7.4.9
 
@@ -61,6 +61,13 @@ CREATE TABLE `libros` (
   `img` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `libros`
+--
+
+INSERT INTO `libros` (`id`, `titulo`, `autor`, `genero`, `fecha_publicacion`, `resumen`, `img`) VALUES
+(1, 'pato', 'chocochocolala chocochoco tete', 'drama', '1998-11-24 00:00:00', 'habia una vez un perro llamado pegamento, se callo y se pego', 'tr1.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -82,7 +89,7 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `nombre`, `correo`, `clave`, `fechareg`, `perfil`) VALUES
 (1, 'Derek', 'derek.torres5865@alumnos.udg.mx', 'scrypt:32768:8:1$dboXqxNSXtXppmaF$c30622b54dad30e3343e5ed3d5ae0af9ed377640d17d23977fa8909a7d55b3b8927f686529de9986a6d76fab4e95b5c428efa203992ba0751048cd729ba75a98', '2024-10-02 17:42:32', 'A'),
-(2, 'Azel Torres', 'emisariodelcaos05@gmail.com', 'scrypt:32768:8:1$dGUlQW2oejmKJfFw$b6857db5010654073f0067757a4d45625ea57c11212d3cacbcf94d71ed1f8bb644114501b86664644bc2780c829274418d87411e4f5dbd2e08ca6c62bb8b0785', '2024-10-02 17:49:50', 'U');
+(5, 'yo', 'emisariodelcaos05@alumnos.udg.mx', 'scrypt:32768:8:1$xC7hu680ietm1cPl$61eb03c4f3d4657e00e3e62e9f2ff825b52799b8c42a62de06db96fb2f87003e0176a60407fb77ffe3e20fbf3c9844a5184a70ae14b850fe3dd7307776e37a9d', '2024-11-19 17:56:35', 'U');
 
 -- --------------------------------------------------------
 
@@ -156,13 +163,13 @@ ALTER TABLE `grupo_libros`
 -- AUTO_INCREMENT de la tabla `libros`
 --
 ALTER TABLE `libros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario_libro`
